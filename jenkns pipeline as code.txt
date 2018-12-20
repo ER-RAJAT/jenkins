@@ -12,12 +12,12 @@
         } 
     stage("Build"){
             steps{
-                bat '"C:\\Users\\tasmiya.sana\\Downloads\\apache-maven-3.5.4-bin\\apache-maven-3.5.4\\bin\\mvn" clean install -f "C:\\tools\\workspace\\pipeline_as_code\\pom.xml"'
+                bat '"C:\\Users\\apache-maven-3.5.4-bin\\apache-maven-3.5.4\\bin\\mvn" clean install -f "C:\\tools\\workspace\\pipeline_as_code\\pom.xml"'
             }
         } 
      stage("Sonar_Analysis"){
             steps{
-                bat ' "C:\\Users\\tasmiya.sana\\Downloads\\apache-maven-3.5.4-bin\\apache-maven-3.5.4\\bin\\mvn" sonar:sonar -f "C:\\tools\\workspace\\pipeline_as_code\\pom.xml"'
+                bat ' "C:\\Users\\apache-maven-3.5.4-bin\\apache-maven-3.5.4\\bin\\mvn" sonar:sonar -f "C:\\tools\\workspace\\pipeline_as_code\\pom.xml"'
             }
         }
     stage("Zip_target"){
@@ -28,7 +28,7 @@
        }
     stage("nexus"){
             steps{
-                bat '"C:\\Users\\tasmiya.sana\\Downloads\\curl-7.59.0\\src\\curl.exe" -u admin:admin123 --upload-file target.zip "http://localhost:8081/repository/Maven_repository/"'
+                bat '"C:\\Users\\curl-7.59.0\\src\\curl.exe" -u admin:admin123 --upload-file target.zip "http://localhost:8000/repository/Maven_repository/"'
            }
 }
 }
