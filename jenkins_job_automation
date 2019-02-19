@@ -1,0 +1,41 @@
+To automate job creation in jenkins by fetching it's config file(jenkins file).
+#######################################################################################################################################################################
+#                                                             Author : TASMIYA SANA                                                                                                                          #
+#                                                             Date   : 01/02/2018                                                                                                       # #
+#######################################################################################################################################################################
+
+import glob
+import os
+import sys
+import jenkins
+import xml.etree.ElementTree as ET
+os.chdir("C:/Users/project_clone") #changing directory
+os.system(r'git clone "http://x.y.projectrep.git"') #cloning the repo
+savepath = []
+index = 0
+for filename in glob.iglob(r'C:\Users\python_scripts' + '/**/config.xml', recursive=True): #for recursive search
+	savepath.insert(index,filename)
+	#print(filename)
+	index+=1
+
+print(savepath)
+print(len(savepath))
+
+def convert_xml_file_to_str(pth):
+	tree = ET.parse(pth)
+	#tree = ET.parse(r'C:/Users/python_scripts/config.xml') #the config_xml parameter should be passed as a string representation of the xml and used a xml.etree.ElementTree to parse the XML file and convert it into a string
+	root = tree.getroot()
+	return ET.tostring(root, encoding='utf8', method='xml').decode()
+
+def main():
+	#server = jenkins.Jenkins(url, username=username, password=password) 
+	server = jenkins.Jenkins('http://localhost:8080', username='', password='') #provide jenkins credentials
+	length = len(savepath)
+	print(length)
+	while(length>0):
+		length-=1
+		config = convert_xml_file_to_str(savepath[length])
+		name = "job" + length
+		server.create_job(name, config) # for creating jobs in jenkins
+
+main()
