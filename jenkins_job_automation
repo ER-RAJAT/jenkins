@@ -9,11 +9,11 @@ import os
 import sys
 import jenkins
 import xml.etree.ElementTree as ET
-os.chdir("C:/Users/project_clone") #changing directory
-os.system(r'git clone "http://x.y.projectrep.git"') #cloning the repo
+#os.chdir("C:/Users/Desktop/project_clone")
+#os.system(r'git clone "http://ip_adress/scm/dum/app1.git"')
 savepath = []
 index = 0
-for filename in glob.iglob(r'C:\Users\python_scripts' + '/**/config.xml', recursive=True): #for recursive search
+for filename in glob.iglob(r'C:\Users\Desktop\python_scripts' + '/**/config.xml', recursive=True):
 	savepath.insert(index,filename)
 	#print(filename)
 	index+=1
@@ -21,21 +21,34 @@ for filename in glob.iglob(r'C:\Users\python_scripts' + '/**/config.xml', recurs
 print(savepath)
 print(len(savepath))
 
+def job_name(path1):
+        #p = []
+        #name = [i.split('\')[len(p)-2] for i in path1]
+        path2= str(path1)
+        p = path2.split('\\')
+        name = p[(len(p)-2)]
+        return name
+
 def convert_xml_file_to_str(pth):
+	#length=len(savepath)
+	#print(length)
+	#while(length>0):
+	#os.path.abspath("config.xml")
 	tree = ET.parse(pth)
-	#tree = ET.parse(r'C:/Users/python_scripts/config.xml') #the config_xml parameter should be passed as a string representation of the xml and used a xml.etree.ElementTree to parse the XML file and convert it into a string
+	#tree = ET.parse(r'C:/Users/Desktop/python_scripts/config.xml') #the config_xml parameter should be passed as a string representation of the xml and used a xml.etree.ElementTree to parse the XML file and convert it into a string
 	root = tree.getroot()
 	return ET.tostring(root, encoding='utf8', method='xml').decode()
 
 def main():
-	#server = jenkins.Jenkins(url, username=username, password=password) 
-	server = jenkins.Jenkins('http://localhost:8080', username='', password='') #provide jenkins credentials
+	#server = jenkins.Jenkins(url, username=username, password=password)
+	server = jenkins.Jenkins('http://localhost:8080', username='abc', password='xyz')
 	length = len(savepath)
 	print(length)
 	while(length>0):
 		length-=1
 		config = convert_xml_file_to_str(savepath[length])
-		name = "job" + length
-		server.create_job(name, config) # for creating jobs in jenkins
+		name1 = job_name(savepath[length])
+		#name = "job" + str(length)
+		server.create_job(name1, config)
 
 main()
